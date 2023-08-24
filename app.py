@@ -2,7 +2,6 @@ from concurrent.futures import ThreadPoolExecutor
 
 from flask import Flask
 from webapp.serve import close_httpd, create_httpd, run_httpd
-from webapp.setup import build_remote_branch
 
 BASE_DIR = './dist/genstuff'
 
@@ -10,7 +9,7 @@ executor = ThreadPoolExecutor(8)
 
 servers = {}
 
-app = Flask('my-angular-server-app')
+app = Flask(__name__)
 
 @app.route('/start')
 def start_server():
@@ -29,8 +28,7 @@ def stop_server(port):
     return f'stopped {port}'
 
 try:
-    # app.run('0.0.0.0', 8800)
-    build_remote_branch()
+    app.run('0.0.0.0', 8800)
 except KeyboardInterrupt:
     print('closing')
 finally:
