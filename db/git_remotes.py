@@ -10,7 +10,7 @@ def create_table():
         )
     ''')
 
-def add_new_remote(remote_url, remote_branch_name, local_branch_name):
+def add_new_remote_branch(remote_url, remote_branch_name, local_branch_name):
     execute_query(f'''
         INSERT INTO TABLE git_remotes
         (remote_url, remote_branch_name, local_branch_name)
