@@ -2,6 +2,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 from flask import Flask
 from webapp.serve import close_httpd, create_httpd, run_httpd
+from webapp.setup import build_remote_branch
 
 BASE_DIR = './dist/genstuff'
 
@@ -28,7 +29,8 @@ def stop_server(port):
     return f'stopped {port}'
 
 try:
-    app.run('0.0.0.0', 8800)
+    # app.run('0.0.0.0', 8800)
+    build_remote_branch()
 except KeyboardInterrupt:
     print('closing')
 finally:

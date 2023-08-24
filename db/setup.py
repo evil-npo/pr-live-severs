@@ -1,13 +1,7 @@
-import sqlite3
+import conf
 import git_remotes
 import live_servers
-from conf import db_file_name
 
-try:
-    connection = sqlite3.connect(db_file_name)
-    git_remotes.create_table(connection)
-    live_servers.create_table(connection)
-except Exception as e:
-    print('could not set up db', e)
-finally:
-    connection.close()
+with conf.get_db_connection() as conn:
+    git_remotes.create_table(conn)
+    live_servers.create_table(conn)

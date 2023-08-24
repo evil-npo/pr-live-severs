@@ -1,4 +1,3 @@
-import sqlite3
 from sqlite3 import Connection
 
 def create_table(con: Connection):
