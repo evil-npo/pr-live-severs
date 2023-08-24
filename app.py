@@ -1,7 +1,7 @@
 from concurrent.futures import ThreadPoolExecutor
 
 from flask import Flask
-from serve_webapp import close_httpd, create_httpd, run_httpd
+from webapp.serve import close_httpd, create_httpd, run_httpd
 
 BASE_DIR = './dist/genstuff'
 
