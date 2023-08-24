@@ -6,7 +6,7 @@ def create_table():
             remote_url TEXT NOT NULL,
             remote_branch_name TEXT NOT NULL,
             local_branch_name TEXT PRIMARY KEY,
-            server_is_live INTEGER
+            server_port INTEGER
         )
     ''')
 
@@ -21,19 +21,19 @@ def add_new_remote_branch(remote_url, remote_branch_name, local_branch_name):
 def start_live_server(local_branch_name, port):
     execute_query(f'''
         UPDATE TABLE git_remotes
-        SET server_is_live = {port}
+        SET server_port = {port}
         WHERE local_branch_name = {local_branch_name}
     ''')
 
 def stop_live_server(local_branch_name):
     execute_query(f'''
         UPDATE TABLE git_remotes
-        SET server_is_live = NULL
+        SET server_port = NULL
         WHERE local_branch_name = {local_branch_name}
     ''')
 
-def reset_live_server_status():
-    execute_query('UPDATE TABLE git_remotes SET server_is_live = NULL')
+def reset_all_servers():
+    execute_query('UPDATE TABLE git_remotes SET server_port = NULL')
 
 def get_live_servers():
-    return execute_query('SELECT * FROM git_remotes WHERE server_is_live IS NOT NULL')
+    return execute_query('SELECT * FROM git_remotes WHERE server_port IS NOT NULL')
