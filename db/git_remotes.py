@@ -1,52 +1,39 @@
-from conf import get_db_connection
+from conf import execute_query
 
 def create_table():
-    with get_db_connection() as conn:
-        cursor = conn.cursor()
-        cursor.execute('''
+    execute_query('''
         CREATE TABLE git_remotes(
-            remote_url TEXT,
-            remote_branch_name TEXT,
+            remote_url TEXT NOT NULL,
+            remote_branch_name TEXT NOT NULL,
             local_branch_name TEXT PRIMARY KEY,
-            server_is_live INTEGER DEFAULT 0
+            server_is_live INTEGER
         )
-        ''')
+    ''')
 
 def add_new_remote(remote_url, remote_branch_name, local_branch_name):
-    with get_db_connection() as conn:
-        cursor = conn.cursor()
-        cursor.execute(f'''
+    execute_query(f'''
         INSERT INTO TABLE git_remotes
-        (remote_url, local_branch_name, server_is_live)
+        (remote_url, remote_branch_name, local_branch_name)
         VALUES
         ({remote_url}, {remote_branch_name}, {local_branch_name})
-        ''')
+    ''')
 
-def start_live_server(local_branch_name):
-    with get_db_connection() as conn:
-        cursor = conn.cursor()
-        cursor.execute(f'''
+def start_live_server(local_branch_name, port):
+    execute_query(f'''
         UPDATE TABLE git_remotes
-        SET server_is_live = 1
+        SET server_is_live = {port}
         WHERE local_branch_name = {local_branch_name}
-        ''')
+    ''')
 
 def stop_live_server(local_branch_name):
-    with get_db_connection() as conn:
-        cursor = conn.cursor()
-        cursor.execute(f'''
+    execute_query(f'''
         UPDATE TABLE git_remotes
-        SET server_is_live = 0
+        SET server_is_live = NULL
         WHERE local_branch_name = {local_branch_name}
-        ''')
+    ''')
 
 def reset_live_server_status():
-    with get_db_connection() as conn:
-        cursor = conn.cursor()
-        cursor.execute('UPDATE TABLE git_remotes SET server_is_live = 0')
+    execute_query('UPDATE TABLE git_remotes SET server_is_live = NULL')
 
 def get_live_servers():
-    with get_db_connection() as conn:
-        cursor = conn.cursor()
-        result = cursor.execute('SELECT * FROM git_remotes WHERE server_is_live = 1')
-        return result.fetchall()
+    return execute_query('SELECT * FROM git_remotes WHERE server_is_live IS NOT NULL')
