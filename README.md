@@ -7,6 +7,9 @@ for PRs and stuff
 * activate venv : `source venv/bin/activate`
 * install packages : `pip install -r requirements.txt`
 
+## setup
+* setup the db for the tables with `python db/setup.py`
+
 ## usage
 * run flask app with `python app.py`
 * hit endpoint `http://localhost:8800/start` to start angular app,
