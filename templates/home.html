@@ -4,13 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PR Live Server</title>
+    <link rel="stylesheet" href="./static/styles.css">
 </head>
 <body>
     <h1>Create live servers of PRs.</h1>
-    <ul>
-        <h2>Navigation:</h2>
-        <li><a href="./servers/create">Start new server for a PR.</a></li>
-        <li><a href="./servers">View existing servers.</a></li>
-    </ul>
+    {% include 'view-servers.html' %}
 </body>
 </html>

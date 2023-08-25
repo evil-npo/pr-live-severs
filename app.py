@@ -1,6 +1,6 @@
 from concurrent.futures import ThreadPoolExecutor
 
-from flask import Flask, render_template
+from flask import Flask, render_template, send_from_directory
 from webapp.serve import close_httpd, create_httpd, run_httpd
 
 BASE_DIR = './dist/genstuff'
@@ -15,13 +15,9 @@ app = Flask(__name__)
 def home():
     return render_template('home.html')
 
-@app.route('/servers')
-def view_all_servers():
-    return render_template('view-servers.html')
-
-@app.route('/servers/create')
-def create_server():
-    return render_template('create-server.html')
+@app.route('/static/<filename>')
+def create_server(filename):
+    return send_from_directory('static', filename)
 
 @app.route('/start')
 def start_server():
