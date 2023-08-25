@@ -5,7 +5,7 @@ from webapp.serve import close_httpd, create_httpd, run_httpd
 from webapp.build import fetch_remote_branch
 from db.git_remotes import add_new_remote_branch
 
-BASE_DIR = '/home/eliterolox/js-stuff/sample-web-app/src'
+BASE_DIR = '../sample-web-app/src'
 HOST_PORT = ('0.0.0.0', 8800)
 
 executor = ThreadPoolExecutor(8)
