@@ -1,15 +1,27 @@
 from concurrent.futures import ThreadPoolExecutor
 
-from flask import Flask
+from flask import Flask, render_template
 from webapp.serve import close_httpd, create_httpd, run_httpd
 
 BASE_DIR = './dist/genstuff'
+HOST_PORT = ('0.0.0.0', 8800)
 
 executor = ThreadPoolExecutor(8)
-
 servers = {}
 
 app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+@app.route('/servers')
+def view_all_servers():
+    return render_template('view-servers.html')
+
+@app.route('/servers/create')
+def create_server():
+    return render_template('create-server.html')
 
 @app.route('/start')
 def start_server():
@@ -28,9 +40,8 @@ def stop_server(port):
     return f'stopped {port}'
 
 try:
-    app.run('0.0.0.0', 8800)
-except KeyboardInterrupt:
-    print('closing')
+    app.run(*HOST_PORT)
 finally:
     for server in servers:
         stop_server(server)
+    print('\rClosed all servers.')

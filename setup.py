@@ -1,3 +1,3 @@
-import git_remotes
+from db import git_remotes
 
 git_remotes.create_table()

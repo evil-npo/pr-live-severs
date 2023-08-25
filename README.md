@@ -8,7 +8,7 @@ for PRs and stuff
 * install packages : `pip install -r requirements.txt`
 
 ## setup
-* setup the db for the tables with `python db/setup.py`
+* setup the db for the tables with `python setup.py`
 
 ## usage
 * run flask app with `python app.py`

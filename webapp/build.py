@@ -29,5 +29,3 @@ def build_remote_branch(BASE_DIR, TARGET_DIR):
         cwd=BASE_DIR
     )
     shutil.copytree(BASE_DIR+'/dist/genstuff', TARGET_DIR, dirs_exist_ok=True)
-
-# use_remote_branch('https://github.com/lagold27/homebrew-oh-my-posh.git', 'main', 'test-repo')

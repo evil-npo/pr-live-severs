@@ -1,4 +1,4 @@
-from conf import execute_query
+from .conf import execute_query
 
 def create_table():
     execute_query('''
