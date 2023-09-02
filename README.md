@@ -1,5 +1,5 @@
-# serve angular apps
-for PRs and stuff
+# environment-on-demand for angular apps
+for PRs mostly
 
 ## installation
 * use python v3.7+
@@ -8,11 +8,8 @@ for PRs and stuff
 * install packages : `pip install -r requirements.txt`
 
 ## setup
-* setup the db for the tables with `python setup.py`
+* setup the db for the tables with `python setup.py` (please be in the directory where this project is cloned)
 
 ## usage
 * run flask app with `python app.py`
-* hit endpoint `http://localhost:8800/start` to start angular app,
-it gives you the port number of where the app is running
-* visit `http://localhost:1234` to view the angular app
-* hti endpoint `http://localhost:8800/stop/1234` to stop angular app running on port `1234`
+* open `http://localhost:8800` to view the app
