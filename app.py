@@ -30,12 +30,14 @@ def create_server():
     try:
         fetch_remote_branch(remote_url, remote_branch_name, local_branch_name, BASE_DIR)
         build_remote_branch(BASE_DIR, TARGET_DIR + '/' + local_branch_name)
-    except Exception:
+        success = {
+            'remote': f'{remote_url} : {remote_branch_name}',
+            'local': local_branch_name
+        }
+        return render_template('server-created.html', success=success)
+    except Exception as e:
         delete_remote_branch(str(local_branch_name))
-    return f'''
-        <h1>All good for { remote_url } and { remote_branch_name }</h1>
-        <h1>Local branch : { local_branch_name } </h1>
-    '''
+        return render_template('server-created.html', error=e)
 
 @app.route('/start')
 def start_server():

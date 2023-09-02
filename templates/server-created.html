@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PR Live Server - Server Created</title>
+</head>
+<body>
+    {% if success %}
+        <h1>Created Server.</h1>
+        <h2>From : {{ success['remote'] }}</h2>
+        <h2>With local branch as {{ success['local'] }}</h2>
+    {% else %}
+        <h1>Could not create server.</h1>
+        <h2>Error : {{ error }}</h2>
+    {% endif %}
+
+    <h1><a href="../">Go home.</a></h1>
+</body>
+</html>
