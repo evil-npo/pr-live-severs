@@ -32,20 +32,28 @@ def delete_remote_branch(local_branch_name):
 
 def start_live_server(local_branch_name, port):
     execute_query('''
-        UPDATE TABLE git_remotes
+        UPDATE git_remotes
         SET server_port = ?
         WHERE local_branch_name = ?
     ''', (port, local_branch_name))
 
+def get_live_server_port(local_branch_name):
+    ports = execute_query('''
+        SELECT server_port from git_remotes WHERE local_branch_name = ?
+    ''', (local_branch_name,))
+    if not ports:
+        return None
+    return ports[0][0]
+
 def stop_live_server(local_branch_name):
     execute_query('''
-        UPDATE TABLE git_remotes
+        UPDATE git_remotes
         SET server_port = NULL
         WHERE local_branch_name = ?
-    ''', (local_branch_name))
+    ''', (local_branch_name,))
 
 def reset_all_servers():
-    execute_query('UPDATE TABLE git_remotes SET server_port = NULL')
+    execute_query('UPDATE git_remotes SET server_port = NULL')
 
 def get_all_servers():
     return execute_query('SELECT * FROM git_remotes')

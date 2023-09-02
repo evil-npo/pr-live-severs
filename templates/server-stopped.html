@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PR Live Server - Server Stopped</title>
+</head>
+<body>
+    <h1>Started Stopped.</h1>
+    {% if port is none %}
+        <h2>Server for {{ local_branch_name }} was already stopped.</h2>
+    {% else %}
+        <h2>Server for {{ local_branch_name }} running on {{ port }} has been stopped.</h2>
+    {% endif %}
+    <h1><a href="../">Go home.</a></h1>
+</body>
+</html>

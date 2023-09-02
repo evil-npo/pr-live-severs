@@ -38,7 +38,7 @@
                 <td class="remote-url">{{ server[0] }}</td>
                 <td class="remote-branch">{{ server[1] }}</td>
                 <td class="local-branch">{{ server[2] }}</td>
-                <td class="port-num">{{ '-' if server[3] is none else server[3] }}</td>
+                <td class="port-num">{{ server[3] }}</td>
                 <td class="start-stop-server">
                     <a href="{{ './start/'+server[2] if server[3] is none else './stop/'+server[2] }}">
                         <button>

@@ -3,7 +3,7 @@ from concurrent.futures import ThreadPoolExecutor
 from flask import Flask, render_template, send_from_directory, request
 from webapp.serve import close_httpd, create_httpd, run_httpd
 from webapp.build import fetch_remote_branch, build_remote_branch
-from db.git_remotes import add_new_remote_branch, delete_remote_branch, get_all_servers
+from db.git_remotes import add_new_remote_branch, delete_remote_branch, get_all_servers, get_live_server_port, reset_all_servers, start_live_server, stop_live_server
 
 BASE_DIR = '../sample-web-app/src'
 TARGET_DIR = '../builds'
@@ -40,25 +40,33 @@ def create_server():
         delete_remote_branch(str(local_branch_name))
         return render_template('server-created.html', error=e)
 
-@app.route('/start')
-def start_server():
-    httpd = create_httpd(BASE_DIR)
-    port = httpd.server_address[1]
-    executor.submit(run_httpd, httpd)
-    servers[port] = httpd
-    return {'port': port}
+@app.route('/start/<local_branch_name>')
+def start_server(local_branch_name):
+    port = get_live_server_port(local_branch_name)
+    if not port:
+        httpd = create_httpd(TARGET_DIR + '/' + local_branch_name)
+        port = httpd.server_address[1]
+        executor.submit(run_httpd, httpd)
+        servers[port] = httpd
+        start_live_server(local_branch_name, port)
+    return render_template('server-started.html', local_branch_name=local_branch_name, port=port)
 
-@app.route('/stop/<int:port>')
-def stop_server(port):
-    if port not in servers:
-        return Exception('no such server running')
-    httpd = servers[port]
-    close_httpd(httpd)
-    return f'stopped {port}'
+@app.route('/stop/<local_branch_name>')
+def stop_server(local_branch_name, in_flask=True):
+    port = get_live_server_port(local_branch_name)
+    if port:
+        if port not in servers:
+            return Exception('no such server running')
+        httpd = servers[port]
+        close_httpd(httpd)
+        stop_live_server(local_branch_name)
+    if in_flask:
+        return render_template('server-started.html', local_branch_name=local_branch_name, port=port)
 
 try:
+    reset_all_servers()
     app.run(*HOST_PORT)
 finally:
     for server in servers:
-        stop_server(server)
+        stop_server(server, False)
     print('\rClosed all servers.')
