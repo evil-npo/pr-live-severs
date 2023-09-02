@@ -2,10 +2,11 @@ from concurrent.futures import ThreadPoolExecutor
 
 from flask import Flask, render_template, send_from_directory, request
 from webapp.serve import close_httpd, create_httpd, run_httpd
-from webapp.build import fetch_remote_branch
-from db.git_remotes import add_new_remote_branch
+from webapp.build import fetch_remote_branch, build_remote_branch
+from db.git_remotes import add_new_remote_branch, delete_remote_branch
 
 BASE_DIR = '../sample-web-app/src'
+TARGET_DIR = '../builds'
 HOST_PORT = ('0.0.0.0', 8800)
 
 executor = ThreadPoolExecutor(8)
@@ -25,8 +26,12 @@ def serve_static(filename):
 def create_server():
     remote_url = request.form['remote_url']
     remote_branch_name = request.form['remote_branch_name']
-    local_branch_name = fetch_remote_branch(remote_url, remote_branch_name, BASE_DIR)
-    add_new_remote_branch(remote_url, remote_branch_name, local_branch_name)
+    local_branch_name = add_new_remote_branch(remote_url, remote_branch_name)
+    try:
+        fetch_remote_branch(remote_url, remote_branch_name, local_branch_name, BASE_DIR)
+        build_remote_branch(BASE_DIR, TARGET_DIR + '/' + local_branch_name)
+    except Exception:
+        delete_remote_branch(str(local_branch_name))
     return f'''
         <h1>All good for { remote_url } and { remote_branch_name }</h1>
         <h1>Local branch : { local_branch_name } </h1>

@@ -1,3 +1,4 @@
+import uuid
 from .conf import execute_query
 
 def create_table():
@@ -10,13 +11,24 @@ def create_table():
         )
     ''')
 
-def add_new_remote_branch(remote_url, remote_branch_name, local_branch_name):
+def add_new_remote_branch(remote_url, remote_branch_name):
+    rows = execute_query(
+        'SELECT local_branch_name FROM git_remotes WHERE remote_url = ? AND remote_branch_name = ?',
+        (remote_url, remote_branch_name)
+    )
+    if rows:
+        return rows[0][0]
+    local_branch_name = uuid.uuid4()
     execute_query('''
         INSERT INTO git_remotes
         (remote_url, remote_branch_name, local_branch_name)
         VALUES
         (?, ?, ?)
     ''', (remote_url, remote_branch_name, local_branch_name))
+    return local_branch_name
+
+def delete_remote_branch(local_branch_name):
+    execute_query('DELETE FROM git_remotes WHERE local_branch_name = ?', (local_branch_name,))
 
 def start_live_server(local_branch_name, port):
     execute_query('''
