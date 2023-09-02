@@ -37,7 +37,7 @@ def create_server():
         }
         return render_template('server-created.html', success=success)
     except Exception as e:
-        delete_remote_branch(str(local_branch_name))
+        delete_remote_branch(local_branch_name)
         return render_template('server-created.html', error=e)
 
 @app.route('/start/<local_branch_name>')
@@ -61,7 +61,7 @@ def stop_server(local_branch_name, in_flask=True):
         close_httpd(httpd)
         stop_live_server(local_branch_name)
     if in_flask:
-        return render_template('server-started.html', local_branch_name=local_branch_name, port=port)
+        return render_template('server-stopped.html', local_branch_name=local_branch_name, port=port)
 
 try:
     reset_all_servers()

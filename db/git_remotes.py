@@ -18,7 +18,7 @@ def add_new_remote_branch(remote_url, remote_branch_name):
     )
     if rows:
         return rows[0][0]
-    local_branch_name = uuid.uuid4()
+    local_branch_name = str(uuid.uuid4())
     execute_query('''
         INSERT INTO git_remotes
         (remote_url, remote_branch_name, local_branch_name)
