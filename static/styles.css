@@ -1,3 +1,7 @@
 html {
     font-family: Arial, sans-serif;
 }
+
+table.all-servers th, table.all-servers td {
+    border: 1px solid black;
+}
