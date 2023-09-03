@@ -20,11 +20,18 @@ def fetch_remote_branch(remote_url, remote_branch_name, local_branch_name, BASE_
     )
     return local_branch_name
 
-def build_remote_branch(BASE_DIR, TARGET_DIR):
+def build_remote_branch(BASE_DIR, TARGET_DIR, refresh_dependencies = False):
     NODE_PATH=f'/home/{os.environ["USER"]}/.nvm/versions/node/v16.13.2/bin'
     environment = {
         'PATH': NODE_PATH + ';' + os.environ['PATH'],
     }
+    if refresh_dependencies:
+        subprocess.run(
+            ['npm', 'install'],
+            check=True,
+            env=environment,
+            cwd=BASE_DIR
+        )
     subprocess.run(
         ['npm', 'run', 'build'],
         check=True,
