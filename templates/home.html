@@ -4,27 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PR Live Server</title>
+    <title>Env On Demand</title>
     <link rel="stylesheet" href="./static/styles.css">
+    <link rel="icon" type="image/x-icon" href="./static/favicon.ico">
 </head>
 
 <body>
     <h1>Create live servers of PRs.</h1>
-    <h2>Create new server:</h2>
     <form action="./create" method="post">
-        <label for="remote_url">
-            <span>Remote Url</span>
-            <input type="text" name="remote_url" id="remote_url">
-        </label>
-        <label for="remote_branch_name">
-            <span>Remote branch name</span>
-            <input type="text" name="remote_branch_name" id="remote_branch_name">
-        </label>
-        <label for="require-install">
-            <span>Require NPM install</span>
-            <input type="checkbox" name="require-install" id="require-npm-install" value="yes">
-        </label>
-        <button type="submit">Create server</button>
+        <fieldset class="create-new-server-inputs">
+            <legend>Create new server</legend>
+            <label for="remote_url">
+                <span>Remote Url</span>
+                <input type="text" name="remote_url" id="remote_url">
+            </label>
+            <label for="remote_branch_name">
+                <span>Remote branch name</span>
+                <input type="text" name="remote_branch_name" id="remote_branch_name">
+            </label>
+            <label for="require-install">
+                <span>Require NPM install</span>
+                <input type="checkbox" name="require-install" id="require-npm-install" value="yes">
+            </label>
+            <button type="submit">Create server</button>
+        </fieldset>
     </form>
 
     <h2>List of servers:</h2>
@@ -33,7 +36,7 @@
             <th class="remote-url">Remote URL</th>
             <th class="remote-branch">Remote Branch Name</th>
             <th class="local-branch">Local Branch Name</th>
-            <th class="port-num">Port Num:</th>
+            <th class="port-num">Port Num</th>
             <th class="start-stop-server">Start / Stop Server</th>
         </thead>
         <tbody>
@@ -42,7 +45,7 @@
                 <td class="remote-url">{{ server[0] }}</td>
                 <td class="remote-branch">{{ server[1] }}</td>
                 <td class="local-branch">{{ server[2] }}</td>
-                <td class="port-num">{{ server[3] }}</td>
+                <td class="port-num">{{ '-' if server[3] is none else server[3] }}</td>
                 <td class="start-stop-server">
                     <a href="{{ './start/'+server[2] if server[3] is none else './stop/'+server[2] }}">
                         <button>

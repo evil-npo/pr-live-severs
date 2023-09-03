@@ -2,6 +2,46 @@ html {
     font-family: Arial, sans-serif;
 }
 
-table.all-servers th, table.all-servers td {
+.create-new-server-inputs {
+    width: fit-content;
+}
+
+.create-new-server-inputs label {
+    display: block;
+    margin: 1em 0;
+}
+
+.create-new-server-inputs label span {
+    display: inline-block;
+    width: 11em;
+}
+
+#require-npm-install {
+    margin: 0;
+}
+
+#remote_url {
+    width: 22em;
+}
+
+table.all-servers th,
+table.all-servers td {
     border: 1px solid black;
+}
+
+@media (prefers-color-scheme: dark) {
+    .create-new-server-inputs {
+        color-scheme: dark;
+    }
+
+    table.all-servers th,
+    table.all-servers td {
+        border: 0.02em solid rgb(80, 80, 80);
+        color-scheme: dark;
+    }
+
+    body {
+        background-color: rgb(25, 24, 24);
+        color: rgb(255, 242, 242);
+    }
 }
